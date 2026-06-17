@@ -45,7 +45,38 @@ void imprimir_tabuleiro(char tabuleiro[TAM][TAM]){
 
         }
         printf(" %d", linha);
+
         printf("\n  +-+-+-+-+-+-+-+-+-+-+\n");
     }
+
     printf("   A B C D E F G H I J\n");
+}
+
+void modo_offline(char tabuleiro[TAM][TAM], const char *nome_arquivo){
+
+    FILE *arquivo = fopen(nome_arquivo, "r");
+
+    if(arquivo == NULL){
+        
+        printf("Nao foi possivel abrir o arquivo '%s'.\n", nome_arquivo);
+        
+        return;
+    }
+    
+    char primeiro_jogador;
+
+    fscanf(arquivo, " %c", &primeiro_jogador);
+
+    if(primeiro_jogador != 'C' && primeiro_jogador != 'B'){
+        
+        printf("Jogador inicial invalido.\n");
+        
+        fclose(arquivo);
+        
+        return;
+    }
+    
+    printf("Jogador %c inicia a partida.\n", primeiro_jogador);
+
+    fclose(arquivo);
 }

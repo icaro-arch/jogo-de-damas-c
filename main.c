@@ -13,6 +13,7 @@ int main(int argc[], char *argv[]){
     }
     else{
         printf("Modo offline selecioado. Arquivo: %s\n", argv[1]);
+        modo_offline(tabuleiro, argv[1]);
     }
     
     return 0;
