@@ -6,7 +6,7 @@ void inicializar_tabuleiro(char tabuleiro[TAM][TAM]){
 
     for(int linha = 0; linha < TAM; linha++){
 
-        for(int coluna = 0; coluna < TAM; linha++){
+        for(int coluna = 0; coluna < TAM; coluna++){
 
             if((linha + coluna) % 2 == 0){
 
@@ -30,5 +30,5 @@ void inicializar_tabuleiro(char tabuleiro[TAM][TAM]){
 }
 
 void imprimir_tabuleiro(char tabuleiro[TAM][TAM]){
-    
+
 }
