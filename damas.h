@@ -16,7 +16,7 @@ VICTOR GABRIEL SANTOS MOREIRA - Matricula: 605643
 #define TAM 10
 
 
-// Protótipos das funções
+// Prototipos das funcoes
 // "char tabuleiro[TAM][TAM]" eh a matriz do tabuleiro
 void inicializar_tabuleiro(char tabuleiro[TAM][TAM]);
 void imprimir_tabuleiro(char tabuleiro[TAM][TAM]);
