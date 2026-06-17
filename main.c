@@ -3,14 +3,18 @@
 #include "damas.h"
 
 
-int main(){
+int main(int argc[], char *argv[]){
+
+    char tabuleiro[TAM][TAM];
+    inicializar_tabuleiro(tabuleiro);
+
+    if(argc < 2){
+        printf("Modo online selecionado.\n");
+    }
+    else{
+        printf("Modo offline selecioado. Arquivo: %s\n", argv[1]);
+    }
     
-    char matriz[TAM][TAM];
-
-    inicializar_tabuleiro(matriz);
-
-    imprimir_tabuleiro(matriz);
-
     return 0;
 
 }
