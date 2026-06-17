@@ -17,8 +17,8 @@ void inicializar_tabuleiro(char tabuleiro[TAM][TAM]){
 
                 if(linha < 3){
                     tabuleiro[linha][coluna] = 'o';
-                }
-                if(linha > 6){
+
+                }else if(linha > 6){
                     tabuleiro[linha][coluna] = '@';
                 } 
                 else {
@@ -31,4 +31,21 @@ void inicializar_tabuleiro(char tabuleiro[TAM][TAM]){
 
 void imprimir_tabuleiro(char tabuleiro[TAM][TAM]){
 
+    printf("   A B C D E F G H I J\n");
+    printf("  +-+-+-+-+-+-+-+-+-+-+\n");
+
+
+    for(int linha = 0; linha < TAM; linha++){
+
+        printf("%d |", linha);
+
+        for(int coluna = 0; coluna < TAM; coluna++){
+
+            printf("%c|", tabuleiro[linha][coluna]);
+
+        }
+        printf(" %d", linha);
+        printf("\n  +-+-+-+-+-+-+-+-+-+-+\n");
+    }
+    printf("   A B C D E F G H I J\n");
 }
