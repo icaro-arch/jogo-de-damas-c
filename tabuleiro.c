@@ -78,5 +78,22 @@ void modo_offline(char tabuleiro[TAM][TAM], const char *nome_arquivo){
     
     printf("Jogador %c inicia a partida.\n", primeiro_jogador);
 
+    char jogada[20];
+    int numero_linha = 1;
+
+    while((fscanf(arquivo, " %19s", jogada) != EOF)){
+
+        numero_linha++;
+
+        int coluna_inicial = jogada[0] - 'A';
+        int linha_inicial = jogada[1] - '0';
+        int coluna_final = jogada[4] - 'A';
+        int linha_final = jogada[5] - '0';
+
+        printf("Posicao inicial: [%d][%d].\n Posicao final: [%d][%d].",coluna_inicial, linha_inicial, coluna_final, linha_final);
+
+    }
+
     fclose(arquivo);
+
 }

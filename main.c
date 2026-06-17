@@ -7,6 +7,7 @@ int main(int argc[], char *argv[]){
 
     char tabuleiro[TAM][TAM];
     inicializar_tabuleiro(tabuleiro);
+    imprimir_tabuleiro(tabuleiro);
 
     if(argc < 2){
         printf("Modo online selecionado.\n");
