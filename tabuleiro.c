@@ -163,7 +163,7 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
         printf("\n");
 
         imprimir_tabuleiro(tabuleiro);
-        printf("------------------------------\n");
+        printf("\n------------------------------\n");
         printf("Jogador %c digite a sua jogada:\n", jogador_da_vez);
 
 
