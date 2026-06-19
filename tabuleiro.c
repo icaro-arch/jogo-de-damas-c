@@ -92,8 +92,12 @@ void modo_offline(char tabuleiro[TAM][TAM], const char *nome_arquivo){
 
         printf("Posicao inicial: [%d][%d].\n Posicao final: [%d][%d].",coluna_inicial, linha_inicial, coluna_final, linha_final);
 
+        // fazer apos as regras
     }
 
     fclose(arquivo);
+}
 
+void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador){
+    
 }
