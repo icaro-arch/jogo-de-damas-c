@@ -22,6 +22,7 @@ void inicializar_tabuleiro(char tabuleiro[TAM][TAM]);
 void imprimir_tabuleiro(char tabuleiro[TAM][TAM]);
 void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador);
 void modo_offline(char tabuleiro[TAM][TAM], const char *nome_arquivo);
+int validar_jogada(char jogada[]);
 
 
 

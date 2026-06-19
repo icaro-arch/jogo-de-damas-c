@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "damas.h"
 
 
-int main(int argc[], char *argv[]){
+int main(int argc, char *argv[]){
 
     char tabuleiro[TAM][TAM];
     inicializar_tabuleiro(tabuleiro);
-    imprimir_tabuleiro(tabuleiro);
 
     if(argc < 2){
         printf("Modo online selecionado.\n");
@@ -39,7 +39,7 @@ int main(int argc[], char *argv[]){
     }
     else{
 
-        printf("Modo offline selecioado. Arquivo: %s\n", argv[1]);
+        printf("\nModo offline selecioado. Arquivo: %s\n", argv[1]);
         modo_offline(tabuleiro, argv[1]);
 
     }
