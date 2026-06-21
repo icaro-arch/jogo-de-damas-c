@@ -16,9 +16,7 @@ all: $(EXEC)
 $(EXEC): $(OBJS)
 	$(CC) $(CFLAGS) -o $(EXEC) $(OBJS)
 
-# Cada .c vira um .o. O make ja sabe compilar regras.c -> regras.o
-# sozinho por causa da regra implicita, mas declarar as dependencias
-# de header explicitamente garante recompilacao quando um .h muda.
+# Cada .c vira um .o.
 main.o: main.c damas.h regras.h
 	$(CC) $(CFLAGS) -c main.c
 
