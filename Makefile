@@ -1,10 +1,9 @@
 # Makefile - Jogo de Damas (CK0211 - 2026.1)
-# Responsavel: Integrante 3 (Pilar 3 / Main)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
-# Nome do executavel final, exigido pelo enunciado
+# Nome do executavel final
 EXEC = damas
 
 # Lista de arquivos objeto, um por modulo .c do projeto
