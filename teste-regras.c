@@ -18,14 +18,14 @@ int main(void) {
     /* Teste 1: movimento simples de peao 'o' para frente (C avanca +linha) */
     montar_tabuleiro_vazio(t);
     t[1][0] = 'o'; /* A1 (coluna=0, linha=1) */
-    r = jogada_valida(t, 0, 1, 1, 2, 'C', &coluna_capturada, &linha_capturada);
+    r = validar_jogada(t, 0, 1, 1, 2, 'C', &coluna_capturada, &linha_capturada);
     printf("Teste 1 (peao C move 1 casa p/ frente diagonal): %s (esperado SIMPLES=1) -> %d\n",
            r == JOGADA_SIMPLES ? "OK" : "FALHOU", r);
 
     /* Teste 2: peao nao pode mover para tras sem captura */
     montar_tabuleiro_vazio(t);
     t[2][1] = 'o';
-    r = jogada_valida(t, 1, 2, 0, 1, 'C', &coluna_capturada, &linha_capturada);
+    r = validar_jogada(t, 1, 2, 0, 1, 'C', &coluna_capturada, &linha_capturada);
     printf("Teste 2 (peao C move p/ tras sem captura): %s (esperado INVALIDA=0) -> %d\n",
            r == JOGADA_INVALIDA ? "OK" : "FALHOU", r);
 
@@ -34,7 +34,7 @@ int main(void) {
     montar_tabuleiro_vazio(t);
     t[2][1] = 'o';
     t[3][2] = '@';
-    r = jogada_valida(t, 1, 2, 3, 4, 'C', &coluna_capturada, &linha_capturada);
+    r = validar_jogada(t, 1, 2, 3, 4, 'C', &coluna_capturada, &linha_capturada);
     printf("Teste 3 (peao C captura '@'): %s (esperado CAPTURA=2) -> %d, capturada=(col=%d,lin=%d) esperado (2,3)\n",
            r == JOGADA_CAPTURA ? "OK" : "FALHOU", r, coluna_capturada, linha_capturada);
 
@@ -44,7 +44,7 @@ int main(void) {
     t[2][1] = 'o';      /* pode capturar */
     t[3][2] = '@';
     t[5][4] = 'o';      /* outra peca, sem captura disponivel */
-    r = jogada_valida(t, 4, 5, 5, 6, 'C', &coluna_capturada, &linha_capturada);
+    r = validar_jogada(t, 4, 5, 5, 6, 'C', &coluna_capturada, &linha_capturada);
     printf("Teste 4 (captura obrigatoria ignorada): %s (esperado INVALIDA=0) -> %d\n",
            r == JOGADA_INVALIDA ? "OK" : "FALHOU", r);
 
@@ -53,7 +53,7 @@ int main(void) {
     montar_tabuleiro_vazio(t);
     t[1][0] = 'O';   /* dama de cima em (coluna=0, linha=1) */
     t[4][3] = '@';   /* peca adversaria em (coluna=3, linha=4), mesma diagonal */
-    r = jogada_valida(t, 0, 1, 5, 6, 'C', &coluna_capturada, &linha_capturada);
+    r = validar_jogada(t, 0, 1, 5, 6, 'C', &coluna_capturada, &linha_capturada);
     printf("Teste 5 (dama captura a distancia): %s (esperado CAPTURA=2) -> %d, capturada=(col=%d,lin=%d) esperado (3,4)\n",
            r == JOGADA_CAPTURA ? "OK" : "FALHOU", r, coluna_capturada, linha_capturada);
 

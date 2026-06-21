@@ -1,7 +1,8 @@
 
+
 #include "regras.h"
 
-/* 2.1 - Validacao de sintaxe e limites (U.7, U.14.h)*/
+/* 2.1 - Validacao de sintaxe e limites */
 
 /*
  * Converte um caractere de coluna ('A'-'J' ou 'a'-'j') para indice
@@ -50,10 +51,7 @@ int posicao_dentro_limites(int coluna, int linha) {
  * consideradas validas.
  *
  * Observacao: esta funcao SO valida o formato da string. Nao valida
- * se origem == destino (isso e regra de jogo, feito em jogada_valida),
- * embora o requisito U.7/U.14.h trate isso como parte da "jogada
- * invalida" - a checagem de origem == destino fica centralizada em
- * jogada_valida() para manter esta funcao focada em sintaxe.
+ * se origem == destino (isso e regra de jogo, feito em validar_jogada)
  */
 int parsear_jogada(const char *entrada, int *coluna_inicial, int *linha_inicial,
                     int *coluna_final, int *linha_final) {
@@ -211,13 +209,13 @@ static int caminho_diagonal_livre(char tabuleiro[TAM][TAM], int coluna_inicial,
 /*
  * Valida um movimento SIMPLES (sem captura) de origem para destino.
  * Pressupoe que a origem contem uma peca do jogador e que origem !=
- * destino (essas checagens sao feitas em jogada_valida). Verifica:
+ * destino (essas checagens sao feitas em validar_jogada). Verifica:
  *  - se o movimento e diagonal;
  *  - se o destino esta vazio;
- *  - para peca normal: exatamente 1 casa, sempre para frente;
+ *  - para peca normal: exatamente 1 casa, sempre para frente ;
  *  - para dama: 1 ou mais casas, qualquer direcao, caminho livre
- * Nao verifica obrigatoriedade de captura - isso e feito em
- * jogada_valida, que chama existe_captura_obrigatoria antes de aceitar
+ * Nao verifica obrigatoriedade de captura  - isso e feito em
+ * validar_jogada, que chama existe_captura_obrigatoria antes de aceitar
  * um movimento simples.
  */
 int validar_movimento_simples(char tabuleiro[TAM][TAM], int coluna_inicial,
@@ -244,7 +242,7 @@ int validar_movimento_simples(char tabuleiro[TAM][TAM], int coluna_inicial,
                                        coluna_final, linha_final);
     }
 
-    /* Peca normal: exatamente 1 casa e sempre para frente*/
+    /* Peca normal: exatamente 1 casa e sempre para frente (U.9) */
     if (abs(diff_linha) != 1) {
         return 0;
     }
@@ -275,7 +273,8 @@ void verificar_promocao(char tabuleiro[TAM][TAM], int coluna_final, int linha_fi
     }
 }
 
-/*2.3 - Captura e captura obrogatória*/
+/*
+ * 2.3 - Captura e captura obrigatoriA */
 
 /*
  * Valida uma captura de PECA NORMAL: salto de exatamente 2 casas na
@@ -481,7 +480,7 @@ int peca_possui_captura(char tabuleiro[TAM][TAM], int coluna, int linha, char jo
  * Retorna 1 se o jogador da vez possui QUALQUER captura disponivel
  * em qualquer uma de suas pecas no tabuleiro. Usado para impor a
  * obrigatoriedade de captura e para combo de capturas
- * (U.12, verificado pelo Pilar 3 apos cada captura).
+ * .
  */
 int existe_captura_obrigatoria(char tabuleiro[TAM][TAM], char jogador) {
     int linha, coluna;
@@ -505,11 +504,11 @@ int existe_captura_obrigatoria(char tabuleiro[TAM][TAM], char jogador) {
 
 /*
  * Funcao principal de validacao. Verifica, na ordem:
- *  1. Limites do tabuleiro e casas jogaveis;
- *  2. Origem == destino;
- *  3. Origem contem peca do jogador da vez;
+ *  1. Limites do tabuleiro e casas jogaveis (U.7, U.14.h);
+ *  2. Origem == destino (U.14.h);
+ *  3. Origem contem peca do jogador da vez (U.14.a);
  *  4. Se ha captura obrigatoria disponivel para o jogador, a jogada
- *     PRECISA ser uma captura valida;
+ *     PRECISA ser uma captura valida (U.14.j, U.15);
  *  5. Caso contrario, tenta validar como captura; se nao for uma
  *     captura valida, tenta validar como movimento simples.
  *
@@ -517,10 +516,10 @@ int existe_captura_obrigatoria(char tabuleiro[TAM][TAM], char jogador) {
  * de captura valida, preenche '*coluna_capturada'/'*linha_capturada'
  * com a posicao da peca adversaria a ser removida pelo Pilar 3.
  */
-ResultadoJogada jogada_valida(char tabuleiro[TAM][TAM], int coluna_inicial,
-                               int linha_inicial, int coluna_final, int linha_final,
-                               char jogador, int *coluna_capturada, int *linha_capturada) {
-    /* 1. Limites e casas jogaveis*/
+ResultadoJogada validar_jogada(char tabuleiro[TAM][TAM], int coluna_inicial,
+                                int linha_inicial, int coluna_final, int linha_final,
+                                char jogador, int *coluna_capturada, int *linha_capturada) {
+    /* 1. Limites e casas jogaveis (U.7, U.14.h) */
     if (!posicao_dentro_limites(coluna_inicial, linha_inicial) ||
         !posicao_dentro_limites(coluna_final, linha_final)) {
         return JOGADA_INVALIDA;
@@ -531,18 +530,18 @@ ResultadoJogada jogada_valida(char tabuleiro[TAM][TAM], int coluna_inicial,
         return JOGADA_INVALIDA;
     }
 
-    /* 2. Origem nao pode ser igual ao destino */
+    /* 2. Origem nao pode ser igual ao destino (U.14.h) */
     if (linha_inicial == linha_final && coluna_inicial == coluna_final) {
         return JOGADA_INVALIDA;
     }
 
-    /* 3. Origem deve conter peca do jogador da vez */
+    /* 3. Origem deve conter peca do jogador da vez (U.14.a) */
     char peca_origem = tabuleiro[linha_inicial][coluna_inicial];
     if (!peca_pertence_ao_jogador(peca_origem, jogador)) {
         return JOGADA_INVALIDA;
     }
 
-    /* 4. Obrigatoriedade de captura: se HOUVER captura
+    /* 4. Obrigatoriedade de captura (U.14.j, U.15): se HOUVER captura
      * disponivel para o jogador em QUALQUER peca, a jogada atual
      * precisa ser uma captura valida - nao basta ser uma captura
      * com a mesma peca, mas tambem nao pode ser um movimento simples */
@@ -567,7 +566,8 @@ ResultadoJogada jogada_valida(char tabuleiro[TAM][TAM], int coluna_inicial,
     return JOGADA_INVALIDA;
 }
 
-/* Fim de partida */
+/* 
+ * Fim de partida */
 
 /*
  * Conta quantas pecas (normais + damas) o jogador ainda possui no

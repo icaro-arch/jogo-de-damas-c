@@ -3,7 +3,8 @@
 
 #include "damas.h"
 
-/* 2.1 - Validacao de sintaxe e limites*/
+/*
+ * 2.1 - Validacao de sintaxe e limites */
 
 /* Converte um caractere de coluna ('A'-'J', maiusculo ou minusculo)
  * para o indice correspondente (0-9). Retorna -1 se invalido. */
@@ -27,13 +28,13 @@ int posicao_dentro_limites(int coluna, int linha);
 /* Verifica se a posicao corresponde a uma casa jogavel (nao '#'). */
 int casa_jogavel(char tabuleiro[TAM][TAM], int coluna, int linha);
 
-/*2.2 - Validacao de movimentos comuns e promocao*/
+/*2.2 - Validacao de movimentos comuns e promocao  */
 
 /* Retorna 1 se a peca no tabuleiro pertence ao jogador informado
  * ('C' para topo: 'o'/'O', 'B' para baixo: '@'/'&'). */
 int peca_pertence_ao_jogador(char peca, char jogador);
 
-/* Retorna 1 se o caractere representa uma dama ('O' ou '&'). */
+/* Retorna 1 se o caractere representa uma dama */
 int eh_dama(char peca);
 
 /* Valida um movimento simples (nao-captura) de uma casa na diagonal,
@@ -49,9 +50,7 @@ int validar_movimento_simples(char tabuleiro[TAM][TAM], int coluna_inicial,
  * realiza a promocao diretamente na matriz, se for o caso. */
 void verificar_promocao(char tabuleiro[TAM][TAM], int coluna_final, int linha_final);
 
-
 /*2.3 - Captura e captura obrigatoria */
-
 
 /* Valida um movimento de captura (peao ou dama) da origem para o
  * destino informados. Se valido, preenche '*coluna_capturada' e
@@ -88,11 +87,12 @@ typedef enum {
  * captura valida, preenche '*coluna_capturada' e '*linha_capturada'
  * com a posicao da peca adversaria a ser removida. Nao altera o
  * tabuleiro. */
-ResultadoJogada jogada_valida(char tabuleiro[TAM][TAM], int coluna_inicial,
-                               int linha_inicial, int coluna_final, int linha_final,
-                               char jogador, int *coluna_capturada, int *linha_capturada);
+ResultadoJogada validar_jogada(char tabuleiro[TAM][TAM], int coluna_inicial,
+                                int linha_inicial, int coluna_final, int linha_final,
+                                char jogador, int *coluna_capturada, int *linha_capturada);
 
-/* Fim de partida*/
+/*
+ * Fim de partida - varreduras */
 
 /* Conta quantas pecas (normais + damas) o jogador ainda possui no
  * tabuleiro. Retorna 0 se nao restam pecas. */
