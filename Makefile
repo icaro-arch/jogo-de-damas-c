@@ -1,3 +1,8 @@
+# Nomes e Matriculas da equipe:
+# PAULO ICARO MATIAS FRANCO - Matricula: 601549
+# DAVI OSUGI ALENCAR FERREIRA GOMES - Matricula: 604474
+# VICTOR GABRIEL SANTOS MOREIRA - Matricula: 605643
+
 # Makefile - Jogo de Damas (CK0211 - 2026.1)
 
 CC = gcc
