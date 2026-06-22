@@ -1,4 +1,8 @@
-
+/* Nomes e Matriculas da equipe:
+PAULO ICARO MATIAS FRANCO - Matricula: 601549
+DAVI OSUGI ALENCAR FERREIRA GOMES - Matricula: 604474
+VICTOR GABRIEL SANTOS MOREIRA - Matricula: 605643
+*/
 
 #include "regras.h"
 

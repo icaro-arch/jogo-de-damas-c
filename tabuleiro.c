@@ -1,3 +1,9 @@
+/* Nomes e Matriculas da equipe:
+PAULO ICARO MATIAS FRANCO - Matricula: 601549
+DAVI OSUGI ALENCAR FERREIRA GOMES - Matricula: 604474
+VICTOR GABRIEL SANTOS MOREIRA - Matricula: 605643
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -84,7 +90,7 @@ void modo_offline(char tabuleiro[TAM][TAM], const char *nome_arquivo){
     char jogada[7];
     int numero_linha = 1;
 
-    /*  esse while foi feito antes das regras, modiquei em um novo usando elas - icaro
+    /*  esse while foi feito antes das regras, modifiquei em um novo usando elas - icaro
     while((fscanf(arquivo, " %7s", jogada) != EOF)){
 
         numero_linha++;
@@ -206,7 +212,7 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
     char jogada[7];
     int rodadas = 1;
 
-    /*  esse while tambem foi feito antes das regraas, tambem modiquei em um novo usando elas - icaro
+    /*  esse while tambem foi feito antes das regras, tambem modifiquei em um novo usando elas - icaro
     while(1){
 
         #ifdef _WIN32
