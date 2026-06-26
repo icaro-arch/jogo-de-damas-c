@@ -10,6 +10,13 @@ VICTOR GABRIEL SANTOS MOREIRA - Matricula: 605643
 #include "damas.h"
 #include "regras.h"
 
+// codigos de escape ANSI para colorir o terminal - icaro
+#define ANSI_VERMELHO     "\033[1;31m"
+#define ANSI_VERDE   "\033[1;32m"
+#define ANSI_AMARELO  "\033[1;33m"
+#define ANSI_AZUL    "\033[1;34m"
+#define ANSI_RESET   "\033[0m"
+
 void inicializar_tabuleiro(char tabuleiro[TAM][TAM]){
 
     for(int linha = 0; linha < TAM; linha++){
@@ -49,9 +56,18 @@ void imprimir_tabuleiro(char tabuleiro[TAM][TAM]){
 
         for(int coluna = 0; coluna < TAM; coluna++){
 
-            printf("%c|", tabuleiro[linha][coluna]);
+            // identifica a peca atual - Icaro
+            char peca = tabuleiro[linha][coluna];
+            if (peca == 'o' || peca == 'O') {
+                printf(ANSI_AZUL "%c" ANSI_RESET "|", peca); // azul para pecas e damas de cima - icaro
+            } else if (peca == '@' || peca == '&') {
+                printf(ANSI_VERMELHO "%c" ANSI_RESET "|", peca); // vermelho para pecas e damas de baixo - icaro
+            } else {
+                printf("%c|", peca); // espacos vazios e '#' vao continuam normais - icaro
+            }
 
         }
+
         printf(" %d", linha);
 
         printf("\n    +-+-+-+-+-+-+-+-+-+-+\n");
@@ -195,11 +211,11 @@ void modo_offline(char tabuleiro[TAM][TAM], const char *nome_arquivo){
     printf("Cima = %d / Baixo = %d\n", pecinhas_capturadas_cima, pecinhas_capturadas_baixo);
 
     if(pecinhas_capturadas_cima > pecinhas_capturadas_baixo){
-        printf("O vencedor eh o usuario de CIMA.\n");
+        printf(ANSI_AZUL "O vencedor eh o usuario de CIMA.\n" ANSI_RESET);
     } else if(pecinhas_capturadas_cima < pecinhas_capturadas_baixo){
-        printf("O vencedor eh o usuario de BAIXO.\n");
+        printf(ANSI_VERMELHO "O vencedor eh o usuario de BAIXO.\n" ANSI_RESET);
     } else {
-        printf("O jogo deu empate.\n");
+        printf(ANSI_AMARELO "O jogo deu empate.\n" ANSI_RESET);
     }
 
     fclose(arquivo); // garantir o fechamento do arquivo - icaro
@@ -211,6 +227,10 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
     char jogador_da_vez = primeiro_jogador;
     char jogada[7];
     int rodadas = 1;
+
+    // variaveis para os bots (comecam desligadas) - icaro
+    int bot_C = 0;
+    int bot_B = 0;
 
     /*  esse while tambem foi feito antes das regras, tambem modifiquei em um novo usando elas - icaro
     while(1){
@@ -283,7 +303,7 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
             #endif
             imprimir_tabuleiro(tabuleiro);
             printf("\n-----------------------------------------------\n");
-            printf("FIM DE JOGO! O jogador de BAIXO (@) venceu a partida!\n");
+            printf(ANSI_VERMELHO "FIM DE JOGO! O jogador de BAIXO (@) venceu a partida!\n" ANSI_RESET);
             printf("-----------------------------------------------\n");
             break;
         }
@@ -295,7 +315,7 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
             #endif
             imprimir_tabuleiro(tabuleiro);
             printf("\n-----------------------------------------------\n");
-            printf("FIM DE JOGO! O jogador de CIMA (o) venceu a partida!\n");
+            printf(ANSI_AZUL "FIM DE JOGO! O jogador de CIMA (o) venceu a partida!\n" ANSI_RESET);
             printf("-----------------------------------------------\n");
             break;
         }
@@ -306,28 +326,82 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
             system("clear");
         #endif
 
-        printf("Digite SAIR para fechar o programa a qualquer momento.\n");
-        printf("\n------ RODADA NUMERO %d ------\n", rodadas);
+        printf("Digite " ANSI_VERMELHO "SAIR" ANSI_RESET " para fechar o programa a qualquer momento.\n");
+        printf("Digite " ANSI_VERDE "DICA" ANSI_RESET " para ver uma sugestao de movimento qualquer.\n");
+        printf("Digite " ANSI_AZUL "AUTO" ANSI_RESET " para que o jogador selecionado vire um bot.\n");
+        printf( "\n------ " ANSI_AMARELO "RODADA NUMERO %d" ANSI_RESET " ------\n" , rodadas);
         printf("\n");
 
-        imprimir_tabuleiro(tabuleiro);
+        imprimir_tabuleiro(tabuleiro);  
         printf("\n------------------------------\n");
-        printf("Jogador %c digite a sua jogada:\n", jogador_da_vez);
 
-        scanf("%6s", jogada);
+        // checagem se e a vez de um bot jogar - icaro
+        int eh_bot = (jogador_da_vez == 'C' && bot_C == 1) || (jogador_da_vez == 'B' && bot_B == 1);
+
+        if (eh_bot) {
+            // se for bot, a maquina gera a jogada sozinha na variavel 'jogada' - icaro
+            if (obter_sugestao_jogada(tabuleiro, jogador_da_vez, jogada)) {
+                if (jogador_da_vez == 'C') {
+                    printf("\n" ANSI_AZUL "[BOT C]" ANSI_RESET " Escolheu e executou a jogada: %s\n", jogada);
+                } else {
+                    printf("\n" ANSI_VERMELHO "[BOT B]" ANSI_RESET " Escolheu e executou a jogada: %s\n", jogada);
+                }
+            printf(ANSI_VERDE "Pressione enter para continuar.\n" ANSI_RESET);
+            char c; while ((c = getchar()) != '\n' && c != EOF); // loop para limpeza do buffer
+            if (!eh_bot) getchar(); // prossegue apos o enter
+            }
+        } else {
+            // se for humano mantem o print que tinha feito antes - icaro
+            if(jogador_da_vez == 'C') {
+                printf(ANSI_AMARELO "Jogador " ANSI_RESET ANSI_AZUL "%c" ANSI_RESET ANSI_AMARELO " digite a sua jogada:\n" ANSI_RESET, jogador_da_vez);
+            }
+            else {
+                printf(ANSI_AMARELO "Jogador " ANSI_RESET ANSI_VERMELHO "%c" ANSI_RESET ANSI_AMARELO " digite a sua jogada:\n" ANSI_RESET, jogador_da_vez);
+            }
+            scanf("%6s", jogada); 
+        }
         
         if(jogada[0] == 'S' && jogada[1] == 'A' && jogada[2] == 'I' && jogada[3] == 'R'){
             printf("Usuario escolheu sair, fechando o programa...\n");
             break;
         }
+        
+        if(jogada[0] == 'D' && jogada[1] == 'I' && jogada[2] == 'C' && jogada[3] == 'A'){
+            char texto_dica[10];
+            
+            if (obter_sugestao_jogada(tabuleiro, jogador_da_vez, texto_dica)) {
+                printf("\n" ANSI_VERDE "[SUGESTAO]" ANSI_RESET " Que tal tentar a jogada: %s ?\n", texto_dica);
+            } else {
+                printf("\n[DICA] Voce nao tem nenhuma jogada valida restando!\n");
+            }
+            
+            printf("Pressione enter para voltar ao jogo.\n");
+            char c; while ((c = getchar()) != '\n' && c != EOF);
+            getchar();
+            continue; //recomeca o loop pedindo a jogada real, sem mudar o jogador da vez
+        }
+
+        if (jogada[0] == 'A' && jogada[1] == 'U' && jogada[2] == 'T' && jogada[3] == 'O') {
+            // ativa o bot permanente para o jogador que digitou o comando - icaro
+            if (jogador_da_vez == 'C') bot_C = 1;
+            if (jogador_da_vez == 'B') bot_B = 1;
+            
+            printf("\n" ANSI_VERDE "[MODO AUTO ATIVADO!]" ANSI_RESET " O jogador %c agora e um bot por toda a partida.\n", jogador_da_vez);
+            printf("Pressione enter para voltar ao jogo.\n");
+            char c; 
+            while ((c = getchar()) != '\n' && c != EOF);
+            getchar();
+            continue; // recomeca o loop, na proxima volta, 'eh_bot' sera verdadeiro (=1) - icaro
+        }
+    
 
         int coluna_inicial, linha_inicial, coluna_final, linha_final;
         int coluna_capturada, linha_capturada;
 
         // 2: parsear_jogada para validar o formato da entrada do jogador - icaro
         if (parsear_jogada(jogada, &coluna_inicial, &linha_inicial, &coluna_final, &linha_final) == 0) {
-            printf("Jogada ou formato invalido!\n");
-            printf("Pressione enter para tentar novamente.\n");
+            printf(ANSI_VERMELHO "Jogada ou formato invalido!\n" ANSI_RESET);
+            printf(ANSI_VERDE "Pressione enter para tentar novamente.\n" ANSI_RESET);
             char c; 
             while ((c = getchar()) != '\n' && c != EOF); // loop para limpeza do buffer
             getchar(); // prossegue apos o enter
@@ -342,12 +416,12 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
         if (res == JOGADA_INVALIDA) {
             // verifica se o erro foi por ignorar uma captura obrigatoria
             if (existe_captura_obrigatoria(tabuleiro, jogador_da_vez)) {
-                printf("Voce tem uma captura obrigatoria!\n");
+                printf(ANSI_AMARELO "Voce tem uma captura obrigatoria!\n" ANSI_RESET);
             } else {
-                printf("Jogada ou formato invalido!\n");
+                printf(ANSI_VERMELHO "Jogada ou formato invalido!\n" ANSI_RESET);
             }
             
-            printf("Pressione enter para tentar novamente.\n");
+            printf(ANSI_VERDE "Pressione enter para tentar novamente.\n" ANSI_RESET);
             char c;
             while ((c = getchar()) != '\n' && c != EOF); // loop para limpeza do buffer
             getchar(); // prossegue apos o enter
@@ -372,12 +446,22 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
             jogador_da_vez = (jogador_da_vez == 'C') ? 'B' : 'C';
             rodadas++;
         } else if (res == JOGADA_CAPTURA) {
-            // sempre joga de novo ao capturar (o jogador_da_vez NAO muda) - icaro
-            printf("\nPeca capturada! Voce pode jogar de novo.\n");
-            printf("Pressione enter para continuar.\n");
-            char c; 
-            while ((c = getchar()) != '\n' && c != EOF); // loop para limpeza do buffer
-            getchar(); // prossegue apos o enter
+            // sempre joga de novo ao capturar (o jogador_da_vez nao muda) - icaro
+            // para o bot - icaro
+            if (eh_bot) {
+                if (jogador_da_vez == 'C') {
+                    printf("\n" ANSI_AZUL "[BOT C]" ANSI_RESET " Capturou uma peca e vai jogar novamente!\n");
+                } else {
+                    printf("\n" ANSI_VERMELHO "[BOT B]" ANSI_RESET " Capturou uma peca e vai jogar novamente!\n");
+                }
+            // para o jogador - icaro
+            } else {
+                printf(ANSI_VERDE "\nPeca capturada! Voce pode jogar de novo.\n" ANSI_RESET);
+            }
+            
+            printf(ANSI_VERDE "Pressione enter para continuar.\n" ANSI_RESET);
+            char c; while ((c = getchar()) != '\n' && c != EOF); // loop para limpeza do buffer
+            if (!eh_bot) getchar(); // prossegue apos o enter
         }
     }
 }

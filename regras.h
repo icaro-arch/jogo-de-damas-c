@@ -108,4 +108,7 @@ int contar_pecas_jogador(char tabuleiro[TAM][TAM], char jogador);
  * (nem simples, nem captura) disponivel em nenhuma de suas pecas. */
 int jogador_sem_jogadas(char tabuleiro[TAM][TAM], char jogador);
 
+// Funcao para encontrar uma jogada valida e sugerir ao jogador - icaro
+int obter_sugestao_jogada(char tabuleiro[TAM][TAM], char jogador, char *sugestao_str);
+
 #endif

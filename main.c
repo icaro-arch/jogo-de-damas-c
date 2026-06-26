@@ -7,9 +7,12 @@ VICTOR GABRIEL SANTOS MOREIRA - Matricula: 605643
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "damas.h"
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]){    
+
+    srand(time(NULL)); //usar o relogio do computador para gerar a pseudoaleatoridade - icaro
 
     char tabuleiro[TAM][TAM];
     inicializar_tabuleiro(tabuleiro);

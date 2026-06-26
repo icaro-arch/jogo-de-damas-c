@@ -642,3 +642,54 @@ int jogador_sem_jogadas(char tabuleiro[TAM][TAM], char jogador) {
 
     return 1;
 }
+
+// Funcao para encontrar varias jogadas validas e sugerir uma aleatoria - icaro
+int obter_sugestao_jogada(char tabuleiro[TAM][TAM], char jogador, char *sugestao_str) {
+    int coluna_capturada, linha_capturada;
+    int tem_captura_obrigatoria = existe_captura_obrigatoria(tabuleiro, jogador);
+
+    // matriz para armazenar os textos das jogadas validas
+    char lista_jogadas[200][10];
+    int total_jogadas = 0;
+
+    // varre todas as posicoes iniciais possiveis para a epca e todas as possiveis para ela ir - icaro
+    for (int linha_inicial = 0; linha_inicial < TAM; linha_inicial++) {
+        for (int coluna_inicial = 0; coluna_inicial < TAM; coluna_inicial++) {
+            for (int linha_final = 0; linha_final < TAM; linha_final++) {
+                for (int coluna_final = 0; coluna_final < TAM; coluna_final++) {
+                    
+                    ResultadoJogada resultado = validar_jogada(tabuleiro, 
+                                                               coluna_inicial, linha_inicial, 
+                                                               coluna_final, linha_final, 
+                                                               jogador, 
+                                                               &coluna_capturada, &linha_capturada);
+                    
+                    // se a captura for obrigatoria guardamos apenas ela na matriz - icaro
+                    if (tem_captura_obrigatoria && resultado == JOGADA_CAPTURA) {
+                        //sprintf para armazenar a string - icaro
+                        //esse + 'A' serve para converter o numero em letra de novo
+                        sprintf(lista_jogadas[total_jogadas], "%c%d--%c%d", coluna_inicial + 'A', linha_inicial, coluna_final + 'A', linha_final);
+                        total_jogadas++;
+                    }
+                    // se nao houver nenhuma obrigatoria guardamos os movimentos possiveis - icaro
+                    else if (!tem_captura_obrigatoria && resultado == JOGADA_SIMPLES) {
+                        //sprintf para armazenar a string - icaro
+                        //esse + 'A' serve para converter o numero em letra de novo
+                        sprintf(lista_jogadas[total_jogadas], "%c%d--%c%d", coluna_inicial + 'A', linha_inicial, coluna_final + 'A', linha_final);
+                        total_jogadas++;
+                    }
+                }
+            }
+        }
+    }
+
+    // se encontramos pelo menos uma jogada valida, sorteamos uma delas usando rand
+    if (total_jogadas > 0) {
+        int indice_sorteado = rand() % total_jogadas;
+        strcpy(sugestao_str, lista_jogadas[indice_sorteado]);
+        return 1; // dica sorteada
+    }
+
+    return 0; // caso nenhuma disponivel
+
+}
