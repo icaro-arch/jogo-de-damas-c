@@ -345,7 +345,7 @@ void modo_usuario_contra_usuario(char tabuleiro[TAM][TAM], char primeiro_jogador
             if (res == JOGADA_INVALIDA) {
                 // verifica se o erro foi por ignorar uma captura obrigatoria
                 if (existe_captura_obrigatoria(tabuleiro, jogador_da_vez)) {
-                    printf(ANSI_AMARELO "Jogada invalida. Voce tem uma captura obrigatoria!\n" ANSI_RESET);
+                    printf(ANSI_AMARELO "Jogada invalida.\n" ANSI_RESET);
                 } else {
                     printf(ANSI_VERMELHO "Jogada invalida.\n" ANSI_RESET);
                 }
