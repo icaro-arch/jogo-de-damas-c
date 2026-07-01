@@ -33,18 +33,12 @@ int converter_linha(char c) {
     return -1;
 }
 
-/*
- * Verifica se uma coordenada (coluna, linha) esta dentro dos limites
- * do tabuleiro 10x10.
- */
+/* Verifica se uma coordenada coluna, linha esta dentro dos limites do tabuleiro 10x10.*/
 int posicao_dentro_limites(int coluna, int linha) {
     return (coluna >= 0 && coluna < TAM && linha >= 0 && linha < TAM);
 }
 
-/*
- * Faz o parsing da string digitada no formato estrito
- * "<COL_INI><LIN_INI>--<COL_FIM><LIN_FIM>", por exemplo "B0--C1".
- */
+/*Faz o parsing da string digitada no formato estrito, por exemplo "B0--C1".*/
 int parsear_jogada(const char *entrada, int *coluna_inicial, int *linha_inicial,
                     int *coluna_final, int *linha_final) {
     size_t tamanho;
@@ -83,8 +77,7 @@ int parsear_jogada(const char *entrada, int *coluna_inicial, int *linha_inicial,
     return 1;
 }
 
-/* Verifica se a posicao corresponde a uma casa jogavel, ou seja,
- * uma casa que nao tem '#';*/
+/* Verifica se a posicao corresponde a uma casa jogavel, uma casa que nao tem '#';*/
 int casa_jogavel(char tabuleiro[TAM][TAM], int coluna, int linha) {
     if (!posicao_dentro_limites(coluna, linha)) {
         return 0;
@@ -143,7 +136,7 @@ static int direcao_avanco(char jogador) {
     return 0;
 }
 
-//Verifica se o caminho em linha recta diagonal entre origem e destino ta livre;
+//Verifica se o caminho em linha reta diagonal entre origem e destino ta livre;
 static int caminho_diagonal_livre(char tabuleiro[TAM][TAM], int coluna_inicial,
                                    int linha_inicial, int coluna_final,
                                    int linha_final) {
@@ -164,10 +157,7 @@ static int caminho_diagonal_livre(char tabuleiro[TAM][TAM], int coluna_inicial,
     return 1;
 }
 
-/*
- * Valida um movimento simples de origem para destino.
- * Pressupoe que a origem contem uma peca do jogador e que origem é diferente de destino;
- */
+/*Valida um movimento simples de origem para destino. Pressupoe que a origem contem uma peca do jogador e que origem é diferente de destino;*/
 int validar_movimento_simples(char tabuleiro[TAM][TAM], int coluna_inicial,
                                int linha_inicial, int coluna_final,
                                int linha_final, char jogador) {
@@ -187,7 +177,7 @@ int validar_movimento_simples(char tabuleiro[TAM][TAM], int coluna_inicial,
                                        coluna_final, linha_final);
     }
 
-    /* Peca normal: exatamente 1 casa e sempre para frente*/
+    /* Peca normal é 1 casa e sempre para frente*/
     if (abs(diff_linha) != 1) {
         return 0;
     }
@@ -211,9 +201,8 @@ void verificar_promocao(char tabuleiro[TAM][TAM], int coluna_final, int linha_fi
 }
 
 
-/*Valida uma captura de peça normal, salto de exatamente 2 casas na 
-  diagonal, onde a casa intermediaria contem exatamente uma peca adversaria
-  e a casa de destino esta vazia.*/
+/*Valida uma captura de peça normal, salto de exatamente 2 casas na diagonal, onde a casa intermediaria contem exatamente uma peca adversaria
+e a casa de destino esta vazia.*/
 static int validar_captura_peao(char tabuleiro[TAM][TAM], int coluna_inicial,
                                  int linha_inicial, int coluna_final,
                                  int linha_final, char jogador,
@@ -249,12 +238,8 @@ static int validar_captura_peao(char tabuleiro[TAM][TAM], int coluna_inicial,
     return 1;
 }
 
-/*Valida uma captura da dama:
- * na diagonal o caminho antes da peca adversaria deve estar livre, a peca
- * encontrada deve ser exatamente uma e do adversario, e deve haver
- * pelo menos uma casa vazia imediatamente apos ela na mesma diagonal
- * para a dama poder pousar.
- */
+/*Valida uma captura da dama: na diagonal o caminho antes da peca adversaria deve estar livre, a peca
+  encontrada deve ser exatamente uma e deve tem uma casa vazia*/
 static int validar_captura_dama(char tabuleiro[TAM][TAM], int coluna_inicial,
                                  int linha_inicial, int coluna_final,
                                  int linha_final, char jogador,
@@ -400,10 +385,8 @@ int existe_captura_obrigatoria(char tabuleiro[TAM][TAM], char jogador) {
     return 0;
 }
 
-/*
- * Funcao principal de validacao.
- * Retorna JOGADA_INVALIDA, JOGADA_SIMPLES ou JOGADA_CAPTURA. Definidos no regras.h;
- */
+/*Funcao principal de validacao. 
+  Retorna JOGADA_INVALIDA, JOGADA_SIMPLES ou JOGADA_CAPTURA. Definidos no regras.h;*/
 ResultadoJogada validar_jogada(char tabuleiro[TAM][TAM], int coluna_inicial,
                                 int linha_inicial, int coluna_final, int linha_final,
                                 char jogador, int *coluna_capturada, int *linha_capturada) {
